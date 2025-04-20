@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 const PrivateRoute = () => {
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
 
-  // Si está cargando, podríamos mostrar un spinner
   if (loading) {
     return <div>Cargando...</div>;
   }

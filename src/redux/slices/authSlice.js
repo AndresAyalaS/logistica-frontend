@@ -7,8 +7,9 @@ export const login = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await loginUser(credentials);
-      // Guardar token en localStorage
+      // Guardar token y user en localStorage
       localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
       return response;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -29,8 +30,11 @@ export const register = createAsyncThunk(
   }
 );
 
+const savedUser = localStorage.getItem("user");
+const parsedUser = savedUser ? JSON.parse(savedUser) : null;
+
 const initialState = {
-  user: null,
+  user: parsedUser,
   token: localStorage.getItem('token') || null,
   isAuthenticated: localStorage.getItem('token') ? true : false,
   loading: false,
@@ -43,9 +47,11 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+      state.error = null;
     },
     clearError: (state) => {
       state.error = null;

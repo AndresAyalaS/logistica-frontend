@@ -1,8 +1,8 @@
 // src/components/common/Navbar.js
-import React from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../redux/slices/authSlice';
+import React from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/slices/authSlice";
 import {
   AppBar,
   Toolbar,
@@ -12,13 +12,13 @@ import {
   Container,
   IconButton,
   Menu,
-  MenuItem
-} from '@mui/material';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+  MenuItem,
+} from "@mui/material";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Navbar = () => {
-  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -33,7 +33,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
+    navigate("/login");
     handleClose();
   };
 
@@ -50,29 +50,36 @@ const Navbar = () => {
               mr: 2,
               flexGrow: { xs: 1, md: 0 },
               fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none'
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             LogiSystem
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {isAuthenticated && (
               <>
                 <Button
                   component={RouterLink}
                   to="/"
-                  sx={{ color: 'white', display: 'block' }}
+                  sx={{ color: "white", display: "block" }}
                 >
                   Inicio
                 </Button>
                 <Button
                   component={RouterLink}
                   to="/shipments"
-                  sx={{ color: 'white', display: 'block' }}
+                  sx={{ color: "white", display: "block" }}
                 >
                   Mis Envíos
+                </Button>
+                <Button
+                  component={RouterLink}
+                  to="/routes"
+                  sx={{ color: "white", display: "block" }}
+                >
+                  Rutas
                 </Button>
               </>
             )}
@@ -94,20 +101,18 @@ const Navbar = () => {
                   id="menu-appbar"
                   anchorEl={anchorEl}
                   anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
+                    vertical: "bottom",
+                    horizontal: "right",
                   }}
                   keepMounted
                   transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                    vertical: "top",
+                    horizontal: "right",
                   }}
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem disabled>
-                    {user?.username || 'Usuario'}
-                  </MenuItem>
+                  <MenuItem disabled>{user?.username || "Usuario"}</MenuItem>
                   <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                 </Menu>
               </>

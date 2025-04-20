@@ -2,9 +2,7 @@
 class MockApi {
   constructor() {
     // Inicializar almacenamiento en localStorage si no existe
-    if (!localStorage.getItem("users")) {
-      localStorage.setItem("users", JSON.stringify([]));
-    }
+
     if (!localStorage.getItem("packages")) {
       localStorage.setItem("packages", JSON.stringify([]));
     }
@@ -42,10 +40,6 @@ class MockApi {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
-
-    // Guardar usuario
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
 
     // Retornar usuario sin contraseña
     const { password, ...userWithoutPassword } = newUser;

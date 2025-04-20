@@ -13,6 +13,7 @@ import ShipmentsPage from "./pages/shipmentPage";
 import ShipmentCreatePage from "./pages/shipmentCreatePage";
 import ShipmentDetailPage from "./pages/shipmentDetailPage";
 import ShipmentRoutePage from './pages/shipmentRoutePage';
+import RoutesPage from './pages/routesPage';
 
 //componentes
 import PrivateRoute from "./components/common/privateRoute";
@@ -47,6 +48,7 @@ function App() {
               <Route path="/shipments/create" element={<ShipmentCreatePage />} />
               <Route path="/shipments/:id" element={<ShipmentDetailPage /> } />
               <Route path="/admin/routes" element={<ShipmentRoutePage />} />
+              <Route path="/routes" element={<RoutesPage />} />
               {/* Aquí añadirás más rutas privadas */}
             </Route>
 

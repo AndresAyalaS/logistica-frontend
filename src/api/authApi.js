@@ -1,7 +1,6 @@
 import axios from "axios";
-import mockApi from "./mockApi";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001/api";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000/api";
 
 // Configurar instancia de axios
 const api = axios.create({
@@ -23,61 +22,24 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Función para login
-// export const loginUser = async (credentials) => {
-//   const response = await api.post("/auth/login", credentials);
-//   return response.data;
-// };
-
-// // Función para registro
-// export const registerUser = async (userData) => {
-//   const response = await api.post("/auth/register", userData);
-//   return response.data;
-// };
-
-// // Función para verificar token
-// export const verifyToken = async () => {
-//   const response = await api.get("/auth/verify");
-//   return response.data;
-// };
-
-
-
-//usando mockApi
-
-// Función para login
+//Función para login
 export const loginUser = async (credentials) => {
-  try {
-    const response = await mockApi.login(credentials);
-    return response;
-  } catch (error) {
-    throw error;
-  }
+  const response = await api.post("/auth/login", credentials);
+  return response.data;
 };
 
 // Función para registro
 export const registerUser = async (userData) => {
-  try {
-    const response = await mockApi.register(userData);
-    return response;
-  } catch (error) {
-    throw error;
-  }
+  const response = await api.post("/auth/register", userData);
+  return response.data;
 };
 
 // Función para verificar token
 export const verifyToken = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("No hay token disponible");
-    }
-
-    const response = await mockApi.verifyToken(token);
-    return response;
-  } catch (error) {
-    throw error;
-  }
+  const response = await api.get("/auth/verify");
+  return response.data;
 };
+
+
 
 export default api;

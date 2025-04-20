@@ -426,7 +426,7 @@ const ShipmentForm = () => {
 
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleCloseSnackbar}
       >
         <Alert

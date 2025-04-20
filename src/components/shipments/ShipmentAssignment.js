@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
-  fetchPendingShipments, 
-  fetchRoutes, 
-  fetchCarriers, 
+  fetchPendingShipments,
   assignRoute,
   clearAssignmentStatus 
 } from '../../redux/slices/shipmentSlice';
+
+import { fetchRoutes } from '../../redux/slices/routesSlice';
+import { fetchCarriers } from '../../redux/slices/carriersSlice';
+
 import {
   Box,
   Card,

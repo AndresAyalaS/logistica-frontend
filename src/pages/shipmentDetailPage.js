@@ -107,7 +107,7 @@ const ShipmentDetailPage = () => {
         </Box>
 
         <Typography variant="subtitle1" gutterBottom>
-          Número de seguimiento: <strong>{shipment.trackingNumber}</strong>
+          Número de seguimiento: <strong>{shipment.tracking_number}</strong>
         </Typography>
 
         <Divider sx={{ my: 3 }} />
@@ -119,14 +119,14 @@ const ShipmentDetailPage = () => {
                 Información de Envío
               </Typography>
               <Typography variant="body1" gutterBottom>
-                <strong>Origen:</strong> {shipment.originAddress}
+                <strong>Origen:</strong> {shipment.origin_address}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                <strong>Destino:</strong> {shipment.destinationAddress}
+                <strong>Destino:</strong> {shipment.destination_address}
               </Typography>
               <Typography variant="body1" gutterBottom>
                 <strong>Fecha de creación:</strong>{" "}
-                {new Date(shipment.createdAt).toLocaleString()}
+                {new Date(shipment.created_at).toLocaleString()}
               </Typography>
             </Paper>
           </Grid>
@@ -138,16 +138,16 @@ const ShipmentDetailPage = () => {
               </Typography>
               <Typography variant="body1" gutterBottom>
                 <strong>Tipo de producto:</strong>{" "}
-                {shipment.package.productType}
+                {shipment.product_type}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                <strong>Peso:</strong> {shipment.package.weight} kg
+                <strong>Peso:</strong> {shipment.weight} kg
               </Typography>
               <Typography variant="body1" gutterBottom>
                 <strong>Dimensiones:</strong>{" "}
-                {shipment.package.dimensions.length} x{" "}
-                {shipment.package.dimensions.width} x{" "}
-                {shipment.package.dimensions.height} cm
+                {shipment.dimensions.length} x{" "}
+                {shipment.dimensions.width} x{" "}
+                {shipment.dimensions.height} cm
               </Typography>
             </Paper>
           </Grid>

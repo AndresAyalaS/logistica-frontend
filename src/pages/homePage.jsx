@@ -258,7 +258,7 @@ const HomePage = () => {
                             component="div"
                             fontWeight="bold"
                           >
-                            {shipment.trackingNumber}
+                            {shipment.tracking_number}
                           </Typography>
                           <Chip
                             label={getStatusLabel(shipment.status)}
@@ -271,19 +271,19 @@ const HomePage = () => {
                           color="text.secondary"
                           gutterBottom
                         >
-                          {new Date(shipment.createdAt).toLocaleDateString()}
+                          {new Date(shipment.created_at).toLocaleDateString()}
                         </Typography>
                         <Typography
                           variant="body2"
                           gutterBottom
                           noWrap
-                          title={shipment.destinationAddress}
+                          title={shipment.destination_address}
                         >
                           <strong>Destino:</strong>{" "}
-                          {shipment.destinationAddress}
+                          {shipment.destination_address}
                         </Typography>
                         <Typography variant="body2" noWrap>
-                          <strong>Tipo:</strong> {shipment.package.productType}
+                          <strong>Tipo:</strong> {shipment.product_type}
                         </Typography>
                       </CardContent>
                       <CardActions>

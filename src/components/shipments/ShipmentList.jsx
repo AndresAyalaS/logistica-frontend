@@ -86,7 +86,6 @@ const ShipmentList = () => {
       </Box></>
     );
   }
-  console.log("que datos tengo aqui", shipments);
 
   return (
     <>
@@ -109,17 +108,17 @@ const ShipmentList = () => {
             <TableBody>
               {shipments.map((shipment) => (
                 <TableRow key={shipment.id}>
-                  <TableCell>{shipment.trackingNumber || "N/A"}</TableCell>
+                  <TableCell>{shipment.tracking_number || "N/A"}</TableCell>
                   <TableCell>
-                    {shipment.destinationAddress
-                      ? shipment.destinationAddress.length > 40
-                        ? `${shipment.destinationAddress.substring(0, 40)}...`
-                        : shipment.destinationAddress
+                    {shipment.destination_address
+                      ? shipment.destination_address.length > 40
+                        ? `${shipment.destination_address.substring(0, 40)}...`
+                        : shipment.destination_address
                       : "Dirección no disponible"}
                   </TableCell>
                   <TableCell>
-                    {shipment.createdAt
-                      ? new Date(shipment.createdAt).toLocaleDateString()
+                    {shipment.created_at
+                      ? new Date(shipment.created_at).toLocaleDateString()
                       : "Fecha no disponible"}
                   </TableCell>
                   <TableCell>

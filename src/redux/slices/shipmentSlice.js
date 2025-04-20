@@ -3,30 +3,51 @@ import {
   createShipment,
   getUserShipments,
   getPendingShipments,
-  getRoutes,
-  getCarriers,
   assignRouteToShipment,
 } from "../../api/shipmentApi";
 
-// Async thunk para crear un nuevo envío
+// Crear nuevo envío
 export const createNewShipment = createAsyncThunk(
   "shipments/create",
   async (shipmentData, { rejectWithValue }) => {
     try {
-      const response = await createShipment(shipmentData);
-      return response;
+      return await createShipment(shipmentData);
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
-// Async thunk para obtener los envíos del usuario
+// Obtener envíos del usuario
 export const fetchUserShipments = createAsyncThunk(
   "shipments/fetchUserShipments",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getUserShipments();
+      return await getUserShipments();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Obtener envíos pendientes
+export const fetchPendingShipments = createAsyncThunk(
+  "shipments/fetchPendingShipments",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await getPendingShipments();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Asignar ruta y transportista
+export const assignRoute = createAsyncThunk(
+  "shipments/assignRoute",
+  async ({ shipmentId, routeId, carrierId }, { rejectWithValue }) => {
+    try {
+      const response = await assignRouteToShipment(shipmentId, routeId, carrierId);
       return response;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -34,90 +55,43 @@ export const fetchUserShipments = createAsyncThunk(
   }
 );
 
-
-//asignación de rutas
-
-export const fetchPendingShipments = createAsyncThunk(
-  'shipments/fetchPendingShipments',
-  async () => {
-    const response = await getPendingShipments();
-    return response.data;
-  }
-);
-
-export const fetchRoutes = createAsyncThunk(
-  'shipments/fetchRoutes',
-  async () => {
-    const response = await getRoutes();
-    return response.data;
-  }
-);
-
-export const fetchCarriers = createAsyncThunk(
-  'shipments/fetchCarriers',
-  async () => {
-    const response = await getCarriers();
-    return response.data;
-  }
-);
-
-export const assignRoute = createAsyncThunk(
-  'shipments/assignRoute',
-  async ({ shipmentId, routeId, carrierId }, { rejectWithValue }) => {
-    try {
-      const response = await assignRouteToShipment(shipmentId, routeId, carrierId);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.message || 'Error al asignar ruta');
-    }
-  }
-);
-
-// Estado inicial
 const initialState = {
   shipments: [],
   pendingShipments: [],
-  routes: [],
-  carriers: [],
   loading: false,
   error: null,
-  assignmentSuccess: false
+  success: false,
+  message: "",
+  currentShipment: null,
+  assignmentSuccess: false,
 };
-
-// const initialState = {
-//   shipments: [],
-//   currentShipment: null,
-//   loading: false,
-//   error: null,
-//   success: false,
-// };
 
 const shipmentsSlice = createSlice({
   name: "shipments",
   initialState,
   reducers: {
-    clearShipmentStatus: (state) => {
+    clearShipmentStatus(state) {
       state.error = null;
       state.success = false;
       state.message = "";
     },
-    setCurrentShipment: (state, action) => {
+    setCurrentShipment(state, action) {
       state.currentShipment = action.payload;
     },
-    clearShipmentError: (state) => {
+    clearShipmentError(state) {
       state.error = null;
     },
-    clearShipmentSuccess: (state) => {
+    clearShipmentSuccess(state) {
       state.success = false;
     },
-    clearAssignmentStatus: (state) => {
+    clearAssignmentStatus(state) {
       state.assignmentSuccess = false;
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      // Crear nuevo envío
+      // Crear envío
       .addCase(createNewShipment.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -133,9 +107,9 @@ const shipmentsSlice = createSlice({
       .addCase(createNewShipment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.success = false;
       })
-      // Obtener envíos del usuario
+
+      // Envíos del usuario
       .addCase(fetchUserShipments.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -149,8 +123,7 @@ const shipmentsSlice = createSlice({
         state.error = action.payload;
       })
 
-
-      //asignación de rutas
+      // Envíos pendientes
       .addCase(fetchPendingShipments.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -161,57 +134,27 @@ const shipmentsSlice = createSlice({
       })
       .addCase(fetchPendingShipments.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
 
-      // Fetch Routes
-      .addCase(fetchRoutes.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchRoutes.fulfilled, (state, action) => {
-        state.loading = false;
-        state.routes = action.payload;
-      })
-      .addCase(fetchRoutes.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-
-      // Fetch Carriers
-      .addCase(fetchCarriers.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchCarriers.fulfilled, (state, action) => {
-        state.loading = false;
-        state.carriers = action.payload;
-      })
-      .addCase(fetchCarriers.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-      
-      // Assign Route to Shipment
+      // Asignar ruta
       .addCase(assignRoute.pending, (state) => {
         state.loading = true;
-        state.error = null;
         state.assignmentSuccess = false;
+        state.error = null;
       })
       .addCase(assignRoute.fulfilled, (state, action) => {
         state.loading = false;
         state.assignmentSuccess = true;
-        // Eliminar el envío de la lista de pendientes
         state.pendingShipments = state.pendingShipments.filter(
-          shipment => shipment.id !== action.payload.id
+          (shipment) => shipment.id !== action.payload.id
         );
       })
       .addCase(assignRoute.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || action.error.message;
         state.assignmentSuccess = false;
+        state.error = action.payload;
       });
-
   },
 });
 
@@ -220,6 +163,7 @@ export const {
   setCurrentShipment,
   clearShipmentError,
   clearShipmentSuccess,
-  clearAssignmentStatus, 
+  clearAssignmentStatus,
 } = shipmentsSlice.actions;
+
 export default shipmentsSlice.reducer;

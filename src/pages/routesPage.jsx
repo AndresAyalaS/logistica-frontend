@@ -1,149 +1,128 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRoutes, createNewRoute } from "../redux/slices/routesSlice";
 import {
-  Container,
-  Typography,
-  TextField,
   Button,
+  TextField,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
-  Paper,
-  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
+import Navbar from "../components/common/navbar";
 
 const RoutesPage = () => {
-  const [routes, setRoutes] = useState([]);
-  const [form, setForm] = useState({
+  const dispatch = useDispatch();
+  const { routes, loading, error } = useSelector((state) => state.routes);
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
     name: "",
     start_point: "",
     end_point: "",
     estimated_duration: "",
   });
-  const [editingId, setEditingId] = useState(null);
-
-  const fetchRoutes = async () => {
-    const res = await axios.get("/api/routes");
-    setRoutes(res.data);
-  };
 
   useEffect(() => {
-    fetchRoutes();
-  }, []);
+    dispatch(fetchRoutes());
+  }, [dispatch]);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
-    if (editingId) {
-      await axios.put(`/api/routes/${editingId}`, form);
-    } else {
-      await axios.post("/api/routes", form);
-    }
-    setForm({
-      name: "",
-      start_point: "",
-      end_point: "",
-      estimated_duration: "",
-    });
-    setEditingId(null);
-    fetchRoutes();
-  };
-
-  const handleEdit = (route) => {
-    setForm(route);
-    setEditingId(route.id);
-  };
-
-  const handleDelete = async (id) => {
-    await axios.delete(`/api/routes/${id}`);
-    fetchRoutes();
+  const handleSubmit = () => {
+    dispatch(createNewRoute(formData));
+    handleClose();
   };
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Gestión de Rutas
-      </Typography>
-
-      <Paper sx={{ p: 2, mb: 4 }}>
-        <TextField
-          label="Nombre"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          fullWidth
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Punto de Inicio"
-          name="start_point"
-          value={form.start_point}
-          onChange={handleChange}
-          fullWidth
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Punto Final"
-          name="end_point"
-          value={form.end_point}
-          onChange={handleChange}
-          fullWidth
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Duración Estimada (h)"
-          name="estimated_duration"
-          type="number"
-          value={form.estimated_duration}
-          onChange={handleChange}
-          fullWidth
-          sx={{ mb: 2 }}
-        />
-        <Button variant="contained" onClick={handleSubmit}>
-          {editingId ? "Actualizar Ruta" : "Agregar Ruta"}
+    <>
+      <Navbar />
+      <div style={{ width: "60%", margin: "2rem auto" }}>
+        <h2>Rutas Registradas</h2>
+        <Button variant="contained" color="primary" onClick={handleOpen}>
+          Crear Nueva Ruta
         </Button>
-      </Paper>
-
-      <Paper>
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>ID</TableCell>
               <TableCell>Nombre</TableCell>
-              <TableCell>Inicio</TableCell>
-              <TableCell>Fin</TableCell>
-              <TableCell>Duración (h)</TableCell>
-              <TableCell>Acciones</TableCell>
+              <TableCell>Origen</TableCell>
+              <TableCell>Destino</TableCell>
+              <TableCell>Duración Estimada</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {routes.map((route) => (
-              <TableRow key={route.id}>
-                <TableCell>{route.name}</TableCell>
-                <TableCell>{route.start_point}</TableCell>
-                <TableCell>{route.end_point}</TableCell>
-                <TableCell>{route.estimated_duration}</TableCell>
-                <TableCell>
-                  <Button onClick={() => handleEdit(route)} size="small">
-                    Editar
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(route.id)}
-                    size="small"
-                    color="error"
-                  >
-                    Eliminar
-                  </Button>
-                </TableCell>
+            {Array.isArray(routes) && routes.length > 0 ? (
+              routes.map((route) => (
+                <TableRow key={route.id}>
+                  <TableCell>{route.id}</TableCell>
+                  <TableCell>{route.name}</TableCell>
+                  <TableCell>{route.start_point}</TableCell>
+                  <TableCell>{route.end_point}</TableCell>
+                  <TableCell>
+                    {route.estimated_duration} {route.estimated_duration === 1 ? "hora" : "horas"}
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4}>No hay rutas disponibles.</TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
-      </Paper>
-    </Container>
+
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Crear Ruta</DialogTitle>
+          <DialogContent>
+            <TextField
+              margin="dense"
+              label="Nombre"
+              name="name"
+              fullWidth
+              onChange={handleChange}
+            />
+            <TextField
+              margin="dense"
+              label="Origen"
+              name="start_point"
+              fullWidth
+              onChange={handleChange}
+            />
+            <TextField
+              margin="dense"
+              label="Destino"
+              name="end_point"
+              fullWidth
+              onChange={handleChange}
+            />
+            <TextField
+              margin="dense"
+              label="Duración Estimada"
+              name="estimated_duration"
+              fullWidth
+              onChange={handleChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={handleSubmit} variant="contained">
+              Guardar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    </>
   );
 };
 

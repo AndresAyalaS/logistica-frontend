@@ -81,6 +81,13 @@ const Navbar = () => {
                 >
                   Rutas
                 </Button>
+                <Button
+                  component={RouterLink}
+                  to="/carriers"
+                  sx={{ color: "white", display: "block" }}
+                >
+                  Transportistas
+                </Button>
               </>
             )}
           </Box>

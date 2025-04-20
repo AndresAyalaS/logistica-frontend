@@ -8,8 +8,8 @@ export const login = createAsyncThunk(
     try {
       const response = await loginUser(credentials);
       // Guardar token y user en localStorage
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      localStorage.setItem('token', response.token.token);
+      localStorage.setItem('user', JSON.stringify(response.token.user));
       return response;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -30,8 +30,14 @@ export const register = createAsyncThunk(
   }
 );
 
+let parsedUser = null;
 const savedUser = localStorage.getItem("user");
-const parsedUser = savedUser ? JSON.parse(savedUser) : null;
+try {
+  parsedUser = savedUser ? JSON.parse(savedUser) : null;
+} catch (e) {
+  console.error("Error parsing user from localStorage:", e);
+  localStorage.removeItem("user");
+}
 
 const initialState = {
   user: parsedUser,

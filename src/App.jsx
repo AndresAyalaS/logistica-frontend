@@ -14,6 +14,7 @@ import ShipmentCreatePage from "./pages/shipmentCreatePage";
 import ShipmentDetailPage from "./pages/shipmentDetailPage";
 import ShipmentRoutePage from './pages/shipmentRoutePage';
 import RoutesPage from './pages/routesPage';
+import CarriersPage from './pages/carriersPage';
 
 //componentes
 import PrivateRoute from "./components/common/privateRoute";
@@ -49,7 +50,7 @@ function App() {
               <Route path="/shipments/:id" element={<ShipmentDetailPage /> } />
               <Route path="/admin/routes" element={<ShipmentRoutePage />} />
               <Route path="/routes" element={<RoutesPage />} />
-              {/* Aquí añadirás más rutas privadas */}
+              <Route path="/carriers" element={<CarriersPage />} />
             </Route>
 
             {/* Redireccionar a login si no hay ruta */}

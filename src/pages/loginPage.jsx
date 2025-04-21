@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import LoginForm from '../components/auth/loginForm';
 
 const LoginPage = () => {
@@ -15,19 +15,17 @@ const LoginPage = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-        }}
-      >
-        <LoginForm />
-      </Box>
-    </Container>
+    <Box
+      sx={{
+        width: '100%',
+        minHeight: '100vh',
+        padding: 0,
+        margin: 0,
+        overflow: 'hidden',
+      }}
+    >
+      <LoginForm />
+    </Box>
   );
 };
 

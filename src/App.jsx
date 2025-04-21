@@ -12,7 +12,6 @@ import HomePage from "./pages/homePage";
 import ShipmentsPage from "./pages/shipmentPage";
 import ShipmentCreatePage from "./pages/shipmentCreatePage";
 import ShipmentDetailPage from "./pages/shipmentDetailPage";
-import ShipmentRoutePage from './pages/shipmentRoutePage';
 import RoutesPage from './pages/routesPage';
 import CarriersPage from './pages/carriersPage';
 import AdminShipmentsPage from './pages/adminShipmentsPage';
@@ -48,8 +47,7 @@ function App() {
               <Route path="/dashboard" element={<HomePage />} />
               <Route path="/shipments" element={<ShipmentsPage />} />
               <Route path="/shipments/create" element={<ShipmentCreatePage />} />
-              <Route path="/shipments/:id" element={<ShipmentDetailPage /> } />
-              <Route path="/admin/routes" element={<ShipmentRoutePage />} />
+              <Route path="/shipments/:id" element={<ShipmentDetailPage /> } /> 
               <Route path="/routes" element={<RoutesPage />} />
               <Route path="/carriers" element={<CarriersPage />} />
               <Route path="/admin-shipments" element={<AdminShipmentsPage />} />

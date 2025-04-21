@@ -110,6 +110,22 @@ const AdminShipmentsPage = () => {
       />
     );
   };
+
+  const translateStatus = (status) => {
+    switch (status) {
+      case "pending":
+        return "Pendiente";
+      case "in_transit":
+        return "En tránsito";
+      case "delivered":
+        return "Entregado";
+      case "cancelled":
+        return "Cancelado";
+      default:
+        return status;
+    }
+  };
+
   console.log(allShipments);
 
   return (
@@ -143,7 +159,7 @@ const AdminShipmentsPage = () => {
                       <TableCell>{shipment.user_id}</TableCell>
                       <TableCell>{shipment.origin_address}</TableCell>
                       <TableCell>{shipment.destination_address}</TableCell>
-                      <TableCell>{getStatusChip(shipment.status)}</TableCell>
+                      <TableCell>{getStatusChip(translateStatus(shipment.status))}</TableCell>
                       <TableCell>
                         <Select
                           value={assignments[shipment.id]?.routeId || ""}
@@ -238,7 +254,7 @@ const AdminShipmentsPage = () => {
                     Destino: {selectedShipment.destination_address}
                   </Typography>
                   <Typography variant="subtitle2">
-                    Estado: {getStatusChip(selectedShipment.status)}
+                    Estado: {getStatusChip(translateStatus(selectedShipment.status))}
                   </Typography>
                   {selectedShipment.route_id && (
                     <Typography variant="subtitle2">

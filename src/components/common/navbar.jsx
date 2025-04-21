@@ -45,7 +45,7 @@ const Navbar = () => {
           <Typography
             variant="h6"
             component={RouterLink}
-            to="/"
+            to="/dashboard"
             sx={{
               mr: 2,
               flexGrow: { xs: 1, md: 0 },
@@ -62,7 +62,7 @@ const Navbar = () => {
               <>
                 <Button
                   component={RouterLink}
-                  to="/"
+                  to="/dashboard"
                   sx={{ color: "white", display: "block" }}
                 >
                   Inicio

@@ -128,7 +128,7 @@ export const getPendingShipments = async () => {
 // Asignar ruta y transportista a un envío
 export const assignRouteToShipment = async (shipmentId, routeId, carrierId) => {
   try {
-    const response = await axios.post(
+    const response = await axios.put(
       `${API_URL}/shipments/${shipmentId}/assign`,
       { routeId, carrierId },
       { headers: getAuthHeaders() }

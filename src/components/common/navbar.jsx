@@ -88,6 +88,13 @@ const Navbar = () => {
                 >
                   Transportistas
                 </Button>
+                <Button
+                  component={RouterLink}
+                  to="/admin-shipments"
+                  sx={{ color: "white", display: "block" }}
+                >
+                  admin Envíos
+                </Button>
               </>
             )}
           </Box>

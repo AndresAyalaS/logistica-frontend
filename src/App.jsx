@@ -15,6 +15,7 @@ import ShipmentDetailPage from "./pages/shipmentDetailPage";
 import ShipmentRoutePage from './pages/shipmentRoutePage';
 import RoutesPage from './pages/routesPage';
 import CarriersPage from './pages/carriersPage';
+import AdminShipmentsPage from './pages/adminShipmentsPage';
 
 //componentes
 import PrivateRoute from "./components/common/privateRoute";
@@ -51,6 +52,7 @@ function App() {
               <Route path="/admin/routes" element={<ShipmentRoutePage />} />
               <Route path="/routes" element={<RoutesPage />} />
               <Route path="/carriers" element={<CarriersPage />} />
+              <Route path="/admin-shipments" element={<AdminShipmentsPage />} />
             </Route>
 
             {/* Redireccionar a login si no hay ruta */}

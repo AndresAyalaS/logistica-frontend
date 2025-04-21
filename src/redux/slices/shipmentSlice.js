@@ -4,6 +4,7 @@ import {
   getUserShipments,
   getPendingShipments,
   assignRouteToShipment,
+  getAllShipments,
 } from "../../api/shipmentApi";
 
 // Crear nuevo envío
@@ -49,6 +50,19 @@ export const assignRoute = createAsyncThunk(
     try {
       const response = await assignRouteToShipment(shipmentId, routeId, carrierId);
       return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Obtener todos los envíos
+export const fetchAllShipments = createAsyncThunk(
+  "shipments/fetchAllShipments",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getAllShipments();
+      return response.shipments;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -153,6 +167,20 @@ const shipmentsSlice = createSlice({
       .addCase(assignRoute.rejected, (state, action) => {
         state.loading = false;
         state.assignmentSuccess = false;
+        state.error = action.payload;
+      })
+      
+      // Obtener todos los envíos
+      .addCase(fetchAllShipments.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllShipments.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allShipments = action.payload;
+      })
+      .addCase(fetchAllShipments.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       });
   },

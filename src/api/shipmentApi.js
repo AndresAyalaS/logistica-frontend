@@ -143,5 +143,20 @@ export const assignRouteToShipment = async (shipmentId, routeId, carrierId) => {
   }
 };
 
+// Función para obtener todos los envíos
+export const getAllShipments = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/shipments/all`, {
+      headers: getAuthHeaders(),
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los envíos:", error);
+    throw new Error(
+      error.response?.data?.message || "Error al obtener los envíos"
+    );
+  }
+};
+
 
 
